@@ -1,26 +1,51 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-bg: #0B0B0D;
+  --color-text: #E5E5E5;
+  --color-text-muted: #9CA3AF;
+  --color-buy: #00FF7F;  /* green */
+  --color-sell: #FF4B4B; /* red */
+
+  /* screen breakpoints */
+  --screen-sm: 640px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Base page colors using theme() */
+html, body {
+  background: theme(colors.bg);
+  color: theme(colors.text);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Animated order-flow line (red <-> green) */
+.flow-line {
+  width: 100%;
+  max-width: 600px;
+  height: 2px;
+  background: linear-gradient(90deg, theme(colors.sell), theme(colors.buy), theme(colors.sell));
+  background-size: 200% 100%;
+  animation: flow 3s linear infinite;
+  border-radius: 9999px;
+  opacity: 0.6;
+}
+
+@media (max-width: theme(screens.sm)) {
+  .flow-line {
+    width: 90%;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes flow {
+  0%   { background-position: 200% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* Soft vignette for premium feel */
+.vignette:before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center,
+    rgba(0,0,0,0) 40%, rgba(0,0,0,0.6) 100%);
 }
